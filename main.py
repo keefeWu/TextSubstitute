@@ -30,7 +30,7 @@ inputFolder = 'data/'
 outputFolder = 'output/'
 createFolder(outputFolder)
 jsonPath = 'json/cn.json'
-jsonFile = open(jsonPath)
+jsonFile = open(jsonPath,encoding = 'utf-8')
 jsonData = jsonFile.read()
 keyMap = json.loads(jsonData)
 sortedKeyList = getSortedMapKey(keyMap)
