@@ -2,8 +2,16 @@
 import json
 import os
 def generateOutputData(data, idx, keyName):
-	substituteStr =  "{{ $t('%s') }}"%keyName
-	data = data[:idx]+ substituteStr + data[idx + len(candidateData):]
+	preData = data[:idx]
+	nextData = data[idx + len(candidateData):]
+	preDataSeg = preData.split()
+	nextDataSeg = nextData.split()
+	if preDataSeg[-1][-1] == "'" and nextDataSeg[-1][-1] == "'":
+		substituteStr =  "this.$t('%s')"%keyName
+		data = preData + substituteStr + nextData 
+	else:
+		substituteStr =  "{{ $t('%s') }}"%keyName
+		data = preData + substituteStr + nextData 
 	return data
 
 
