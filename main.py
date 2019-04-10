@@ -6,8 +6,19 @@ def generateOutputData(data, idx, keyName):
 	nextData = data[idx + len(candidateData):]
 	preDataSeg = preData.split()
 	nextDataSeg = nextData.split()
-	if preDataSeg[-1][-1] == "'" and nextDataSeg[-1][-1] == "'":
+	if preDataSeg[-1][-1] == "'" and nextDataSeg[0][0] == "'":
 		substituteStr =  "this.$t('%s')"%keyName
+		preIdx = preData.rfind("'")
+		nextIdx = nextData.find("'")
+		preData = data[:preIdx]
+		nextData = nextData[nextIdx:]
+		data = preData + substituteStr + nextData 
+	elif preDataSeg[-1][-1] == "\"" and nextDataSeg[0][0] == "\"":
+		preIdxLabel = preData.rfind('label')
+		preIdxPlaceholder = preData.rfind('placeholder')
+		preIdx = max(preIdxLabel, preIdxPlaceholder)
+		substituteStr =  "$t('%s')"%keyName
+		preData = preData[:preIdx] + ":" + preData[preIdx:idx]
 		data = preData + substituteStr + nextData 
 	else:
 		substituteStr =  "{{ $t('%s') }}"%keyName
