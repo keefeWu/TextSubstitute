@@ -6,6 +6,13 @@ def generateOutputData(data, idx, keyName):
 	nextData = data[idx + len(candidateData):]
 	preDataSeg = preData.split()
 	nextDataSeg = nextData.split()
+
+	#if in comment
+	leftCommentIdx = preData.rfind('/*') 
+	rightCommentIdx = preData.rfind('*/')
+	if leftCommentIdx > rightCommentIdx:
+		return data 
+
 	if preDataSeg[-1][-1] == "'" and nextDataSeg[0][0] == "'":
 		substituteStr =  "this.$t('%s')"%keyName
 		preIdx = preData.rfind("'")
@@ -44,6 +51,7 @@ def getSortedMapKey(keyMap):
 	valueList.sort(key=lambda x:len(x))
 	sortedKeyList = []
 	valueList.reverse()
+	print(valueList)
 	for value in valueList:
 		sortedKeyList.append(get_key(keyMap, value))
 	return sortedKeyList
@@ -73,14 +81,18 @@ for FileName in inputFiles:
 		print('candidate: %s key: %s'%(candidateData, keyName))
 			
 		# find the idx
-		idx = data.find(candidateData)
-		print('idx: %d'%idx)
-		if idx == -1:
-			continue
-		print('data: %s' %data[idx:idx + len(candidateData)])
+		start = 0
+		idx = 0
+		while(idx != -1):
+			idx = data.find(candidateData, start)
+			print('idx: %d'%idx)
+			if idx == -1:
+				continue
+			start = idx + 1
+			print('data: %s' %data[idx:idx + len(candidateData)])
 
-		# substitute
-		data = generateOutputData(data, idx, keyName)
+			# substitute
+			data = generateOutputData(data, idx, keyName)
 	print('output:%s'%data)
 	outputFile.write(data)
 	inputFile.close()
