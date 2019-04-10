@@ -19,8 +19,9 @@ def getSortedMapKey(keyMap):
 	valueList = []
 	for keyName in keyMap:
 		valueList.append(keyMap[keyName])
-	sortedValueList = valueList.sort(key=lambda x:len(x))
+	valueList.sort(key=lambda x:len(x))
 	sortedKeyList = []
+	valueList.reverse()
 	for value in valueList:
 		sortedKeyList.append(get_key(keyMap, value))
 	return sortedKeyList
