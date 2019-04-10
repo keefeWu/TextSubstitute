@@ -1,8 +1,11 @@
 #coding:utf-8
 import json
 import os
-def generateOutputData(keyName):
-	return "{{ $t('%s') }}"%keyName
+def generateOutputData(data, idx, keyName):
+	substituteStr =  "{{ $t('%s') }}"%keyName
+	data = data[:idx]+ substituteStr + data[idx + len(candidateData):]
+	return data
+
 
 def loadFiles(path):
 	files = os.listdir(path)
@@ -58,7 +61,7 @@ for FileName in inputFiles:
 		print('data: %s' %data[idx:idx + len(candidateData)])
 
 		# substitute
-		data = data[:idx]+ generateOutputData(keyName) + data[idx + len(candidateData):]
+		data = generateOutputData(data, idx, keyName)
 	print('output:%s'%data)
 	outputFile.write(data)
 	inputFile.close()
