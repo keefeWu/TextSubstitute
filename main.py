@@ -11,7 +11,7 @@ def generateOutputData(data, idx, keyName):
 		preIdx = preData.rfind("'")
 		nextIdx = nextData.find("'")
 		preData = data[:preIdx]
-		nextData = nextData[nextIdx:]
+		nextData = nextData[nextIdx+1:]
 		data = preData + substituteStr + nextData 
 	elif preDataSeg[-1][-1] == "\"" and nextDataSeg[0][0] == "\"":
 		preIdxLabel = preData.rfind('label')
